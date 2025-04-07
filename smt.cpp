@@ -92,9 +92,7 @@ int main(){
   down.insert(44);
   down.insert(54);
   down.insert(23);
-  down.insert(3);
   down.insert(43);
-  down.insert(2);
   down.insert(13);
 
   down.display();
