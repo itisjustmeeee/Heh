@@ -1,2 +1,2 @@
-hi, it is just an ordinary account, nothing special. I am just trying to code something. May be later it can be useful :)
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%B5B8F5&lines=look+what+I+can+do+heheheheheheheheh)](https://git.io/typing-svg)
+hi, it is just an ordinary account, nothing special. I am just trying to code something. May be later it can be useful......
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?color=%B5B8F5&lines=there+is+nothing+here+yet+.......)](https://git.io/typing-svg)
