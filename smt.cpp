@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 
 std::vector<int> heap;
@@ -41,4 +41,68 @@ int main(){
 
   display();
   return 0;
+}*/
+
+#include <iostream>
+#include <vector>
+
+class HeapDown{
+private:
+  std::vector<int> heap;
+  
+  void heapheap(int index){
+    while (index > 0){
+      int parent = (index - 1) / 2;
+      if (heap[index] > heap[index]){
+        std::swap(heap[index], heap[parent]);
+        index = parent;
+      }
+      else{
+        break;
+      }
+    }
+  }
+public:
+  void findMax(){
+    std::cout << heap[0] << std::endl;
+  }
+
+  void insert(int val){
+    heap.push_back(val);
+    heapheap(heap.size() - 1);
+  }
+
+  void deleteMax(){
+    heap[0] = heap.back();
+    heap.pop_back();
+    heapheap(size() - 1);
+  }
+
+  void display(){
+    for (int data : heap){
+      std::cout << data << " ";
+    }
+    std::cout << std::endl;
+  }
+};
+
+int main(){
+  HeapDown down;
+  down.insert(65);
+  down.insert(44);
+  down.insert(54);
+  down.insert(23);
+  down.insert(3);
+  down.insert(43);
+  down.insert(2);
+  down.insert(13);
+
+  down.display();
+  down.findMax();
+  down.deleteMax();
+  down.display();
+
+  return 0;
 }
+    
+
