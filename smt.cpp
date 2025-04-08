@@ -75,7 +75,7 @@ public:
   void deleteMax(){
     heap[0] = heap.back();
     heap.pop_back();
-    heapheap(size() - 1);
+    heapheap(heap.size() - 1);
   }
 
   void display(){
