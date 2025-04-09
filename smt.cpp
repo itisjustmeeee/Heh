@@ -135,7 +135,7 @@ int main() {
 }*/
 
 
-#include <iostream>
+/*#include <iostream>
 #include <vector>
 
 std::vector<int> heap;
@@ -222,6 +222,137 @@ int main() {
     std::vector<int> ropes = {3, 7, 8, 10, 29, 1000, 5};
 
     bindRopes(ropes);
+
+    return 0;
+}*/
+
+/*#include <iostream>
+
+struct Node {
+    int data, priority;
+    Node* next;
+
+    Node(int priority, int val) : data(val), priority(priority), next(nullptr) {}
+};
+
+class Que {
+private:
+    Node* head;
+public:
+    Que() : head(nullptr) {}
+
+    void insert(int priority, int val) {
+        Node* newNode = new Node(priority, val);
+
+        if (head == nullptr || head->priority < priority) {
+            newNode->next = head;
+            head = newNode;
+        }
+        else {
+            Node* current = head;
+            if (current->next != nullptr && current->next->priority >= priority) {
+                current = current->next;
+            }
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+
+    }
+
+    int elem() {
+        Node* temp = head;
+        head = head->next;
+        int data = temp->data;
+        delete temp;
+        return data;
+    }
+
+    bool isempty() {
+        return head == nullptr;
+    }
+
+    void display() {
+        Node* current = head;
+        while (current != nullptr) {
+            std::cout <<"( " << current->data << " -> " << current->priority << " )";
+            current = current->next;
+        }
+        std::cout << std::endl;
+    }
+
+    ~Que() {
+        while (head != nullptr) {
+            Node* temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }
+};
+
+int main() {
+    Que queue;
+
+    queue.insert(1, 10);
+    queue.insert(3, 5);
+    queue.insert(4, 20);
+    queue.insert(2, 20);
+
+    queue.display();
+    queue.elem();
+    queue.display();
+
+    return 0;
+}*/
+
+#include <iostream>
+#include <vector>
+
+void heapDown(std::vector<int>& heap, int n, int index) {
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < n && heap[left] > heap[largest]) {
+        largest = left;
+    }
+    if (right < n && heap[right] > heap[largest]) {
+        largest = right;
+    }
+    if (largest != index) {
+        std::swap(heap[index], heap[largest]);
+
+        heapDown(heap, n, largest);
+    }
+}
+
+void heapSort(std::vector<int>& heap) {
+    int n = heap.size();
+
+    for (int i = n / 2 - 1; i >= 0; i--) {
+        heapDown(heap, n, i);
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        std::swap(heap[0], heap[i]);
+
+        heapDown(heap, i, 0);
+    }
+}
+
+void display(const std::vector<int>& heap) {
+    for (int i = 0; i < heap.size(); i++) {
+        std::cout << heap[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+
+    std::vector<int> heap = { 8, 9, 13, 26, 7, 1, 0 };
+    display(heap);
+
+    heapSort(heap);
+
+    display(heap);
 
     return 0;
 }
