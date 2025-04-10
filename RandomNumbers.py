@@ -9,5 +9,5 @@ print(x)
 x = (6*(1**2 + 2**2) + 1**2 + 2**2 + 1 + 2)
 '''
 # numbers in () can be changed, if it's needed
-x = (6*(1 + 4) + 1 + 4 + 1 + 2)
+x = (6*(1 + 4) + 1 + 4 + 1 + 2) % 10
 print(x)
