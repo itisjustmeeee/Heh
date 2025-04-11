@@ -5,9 +5,9 @@ x = randint(1, 30)
 #change the range if needed
 print(x)
 '''
-'''
-x = (6*(1**2 + 2**2) + 1**2 + 2**2 + 1 + 2)
-'''
+
 # numbers in () can be changed, if it's needed
-x = (6*(1 + 4) + 1 + 4 + 1 + 2) % 10
-print(x)
+for i in range(13+1):
+    for j in range(13+1):
+        x = (6*(i**2 + j**2) + i**2 + j**2 + i + j) % 10
+        print(f"w({i},{j}) = {x}")
