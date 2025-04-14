@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>924</width>
+    <height>589</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>60</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Форма регистрации</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_registration">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>380</y>
+      <width>211</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>регистрация</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>130</y>
+      <width>130</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_name_text">
+       <property name="text">
+        <string>имя пользователя</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_FIO_text">
+       <property name="text">
+        <string>ФИО</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_gender_text">
+       <property name="text">
+        <string>пол</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_passport_text">
+       <property name="text">
+        <string>паспорт</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_dateofbirth_text">
+       <property name="text">
+        <string>дата рождения</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_phonenumber_text">
+       <property name="text">
+        <string>номер телефона</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_e_mail_text">
+       <property name="text">
+        <string>e-mail</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>230</y>
+      <width>381</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLineEdit" name="lineEdit_passport_value"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_dateofbirth_value"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_phonenumber_value"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_e_mail_value"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>130</y>
+      <width>381</width>
+      <height>65</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="lineEdit_name_value"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_FIO_value"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>200</y>
+      <width>381</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="radioButton_female">
+       <property name="text">
+        <string>Женский</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioButton_male">
+       <property name="text">
+        <string>Мужской</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>90</y>
+      <width>521</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="pushButton_import">
+       <property name="text">
+        <string>иморт</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_export">
+       <property name="text">
+        <string>экспорт</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>924</width>
+     <height>25</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
