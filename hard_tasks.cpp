@@ -611,7 +611,7 @@ int main() {
 
     return 0;
 }*/
-////////////////////////////
+
 //workbook 1, #7
 /*#include <iostream>
 #include <string>
@@ -953,10 +953,15 @@ int main() {
 
     while (true) {
         int l, r;
-        std::cout << "\nEnter the range [l, r] (or enter -1 to exit): ";
+        std::cout << "\nEnter the range [l, r] (indices from 0 to " << (n - 1) << ", or enter -1 to exit): ";
         std::cin >> l;
         if (l == -1) break;
         std::cin >> r;
+
+        if (l < 0 || r >= n || l > r) {
+            std::cout << "Invalid range! Indices must be between 0 and " << (n - 1) << ", and l <= r.\n";
+            continue;
+        }
 
         long long sum = segTree.getSum(l, r);
         std::cout << "Sum on range [" << l << ", " << r << "]: " << sum << std::endl;
@@ -1053,7 +1058,7 @@ public:
 };
 
 int main() {
-    std::vector<std::pair<int, int>> points = { {1, 1}, {2, 2}, {3, 3}, {4, 4}, {2, 4}, {5, 1} };
+    std::vector<std::pair<int, int>> points = { {1, 2}, {2, 3}, {3, 5}, {4, 8}, {7, 10}, {5, 1} };
     RangeTree tree(points);
 
     int xMin = 2, xMax = 4, yMin = 2, yMax = 4;
@@ -1797,13 +1802,15 @@ int main() {
 #include <unordered_map>
 #include <vector>
 #include <bitset>
+#include <sstream>
+#include <iomanip>
 
 struct Node {
     char ch;
     int freq;
     Node* left, * right;
-
     Node(char character, int frequency) : ch(character), freq(frequency), left(nullptr), right(nullptr) {}
+    ~Node() { delete left; delete right; }
 };
 
 struct Compare {
@@ -1814,78 +1821,103 @@ struct Compare {
 
 void generateCodes(Node* root, const std::string& str, std::unordered_map<char, std::string>& codes) {
     if (!root) return;
-
-    if (root->left == nullptr && root->right == nullptr) {
-        codes[root->ch] = str;
+    if (!root->left && !root->right) {
+        codes[root->ch] = str.empty() ? "0" : str; // для случая одного символа
     }
-
     generateCodes(root->left, str + "0", codes);
     generateCodes(root->right, str + "1", codes);
 }
 
-std::string huffmanEncode(const std::string& text, std::unordered_map<char, std::string>& codes) {
-    std::unordered_map<char, int> frequency;
-    for (char ch : text) {
-        frequency[ch]++;
+// Сериализация дерева Хаффмана в битовый поток (префиксный обход)
+// 0 - внутренний узел, 1 + 8 бит - лист с символом
+void serializeTree(Node* root, std::vector<bool>& bits, std::vector<char>& leaves) {
+    if (!root) return;
+    if (!root->left && !root->right) {
+        bits.push_back(1);
+        leaves.push_back(root->ch);
+        return;
     }
-
-    std::priority_queue<Node*, std::vector<Node*>, Compare> minHeap;
-
-    for (auto pair : frequency) {
-        minHeap.push(new Node(pair.first, pair.second));
-    }
-
-    while (minHeap.size() != 1) {
-        Node* left = minHeap.top(); minHeap.pop();
-        Node* right = minHeap.top(); minHeap.pop();
-
-        Node* top = new Node('\0', left->freq + right->freq);
-        top->left = left;
-        top->right = right;
-
-        minHeap.push(top);
-    }
-
-    Node* root = minHeap.top();
-
-    generateCodes(root, "", codes);
-
-    std::string encodedString = "";
-    for (char ch : text) {
-        encodedString += codes[ch];
-    }
-
-    return encodedString;
+    bits.push_back(0);
+    serializeTree(root->left, bits, leaves);
+    serializeTree(root->right, bits, leaves);
 }
 
-int calculateSize(const std::unordered_map<char, std::string>& codes, const std::string& encodedString) {
-    int totalBits = 0;
-
-    for (auto pair : codes) {
-        totalBits += pair.second.length();
+// Кодирование строки
+std::string huffmanEncode(const std::string& text, std::unordered_map<char, std::string>& codes, Node*& root) {
+    std::unordered_map<char, int> frequency;
+    for (char ch : text) frequency[ch]++;
+    std::priority_queue<Node*, std::vector<Node*>, Compare> minHeap;
+    for (auto& pair : frequency) minHeap.push(new Node(pair.first, pair.second));
+    if (minHeap.size() == 1) minHeap.push(new Node('\0', 0)); // для одного символа
+    while (minHeap.size() > 1) {
+        Node* left = minHeap.top(); minHeap.pop();
+        Node* right = minHeap.top(); minHeap.pop();
+        Node* top = new Node('\0', left->freq + right->freq);
+        top->left = left; top->right = right;
+        minHeap.push(top);
     }
+    root = minHeap.top();
+    generateCodes(root, "", codes);
+    std::string encoded;
+    for (char ch : text) encoded += codes[ch];
+    return encoded;
+}
 
-    totalBits += encodedString.length();
+// Подсчёт бит для битового хранения дерева
+size_t getSerializedTreeBitSize(Node* root) {
+    std::vector<bool> bits;
+    std::vector<char> leaves;
+    serializeTree(root, bits, leaves);
+    // 1 бит на структуру + 8 бит на каждый лист (символ)
+    return bits.size() + leaves.size() * 8;
+}
 
-    return totalBits;
+// Подсчёт бит для хранения словаря в виде пар (символ, код)
+size_t getDictionaryBitSize(const std::unordered_map<char, std::string>& codes) {
+    size_t bits = 0;
+    for (const auto& p : codes) {
+        bits += 8; // символ
+        bits += p.second.size(); // длина кода
+    }
+    return bits;
 }
 
 int main() {
-    std::string text = "hello huffman";
+    std::string text;
+    std::cout << "enter the string for coding: ";
+    std::getline(std::cin, text);
+
     std::unordered_map<char, std::string> codes;
+    Node* root = nullptr;
+    std::string encoded = huffmanEncode(text, codes, root);
 
-    std::string encodedString = huffmanEncode(text, codes);
+    // Сериализация дерева
+    std::vector<bool> treeBits;
+    std::vector<char> leaves;
+    serializeTree(root, treeBits, leaves);
 
-    std::cout << "Encoded string: " << encodedString << std::endl;
+    // Оценка размеров
+    size_t encodedBits = encoded.size();
+    size_t dictBits = getDictionaryBitSize(codes);
+    size_t treeBitsSize = getSerializedTreeBitSize(root);
 
-    std::cout << "Huffman Codes:" << std::endl;
-    for (auto pair : codes) {
-        std::cout << pair.first << ": " << pair.second << std::endl;
+    std::cout << "\nHaffman's codes:\n";
+    for (const auto& p : codes) {
+        std::cout << "'" << (p.first == '\n' ? "\\n" : std::string(1, p.first)) << "': " << p.second << "\n";
     }
+    std::cout << "\nEncoded string (bit length): " << encodedBits << "\n";
+    std::cout << "Dictionary (symbol+code, bit): " << dictBits << "\n";
+    std::cout << "Dictionary (bit tree serialization): " << treeBitsSize << "\n";
+    std::cout << "Total (string+dictionary):\n";
+    std::cout << "  - Symbol+code: " << (encodedBits + dictBits) << " bit\n";
+    std::cout << "  - Bit tree: " << (encodedBits + treeBitsSize) << " bit\n";
 
-    int totalSize = calculateSize(codes, encodedString);
-    std::cout << "Total size (bits): " << totalSize << std::endl;
+    if ((encodedBits + treeBitsSize) < (encodedBits + dictBits))
+        std::cout << "Savings are achieved by storing the Huffman tree in bits.\n";
+    else
+        std::cout << "Savings are not achieved by storing the dictionary as (symbol, code) pairs.\n";
 
+    delete root;
     return 0;
 }*/
 
@@ -1964,7 +1996,7 @@ int main() {
 
     return 0;
 }*/
-////////////////////////////////
+
 //workbook 5, #5
 /*#include <iostream>
 #include <vector>
